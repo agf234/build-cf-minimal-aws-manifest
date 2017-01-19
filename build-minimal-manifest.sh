@@ -1,6 +1,6 @@
 #!/bin/bash 
 #
-# Autor: Andres Lucas Garcia Fiorini
+# Author: Andres Lucas Garcia Fiorini
 # Altoros S.A.(Argentina)
 # date: 01/19/2017
 #
