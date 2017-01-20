@@ -1,6 +1,6 @@
 #!/bin/bash 
 #
-# Autor: Andres Lucas Garcia Fiorini
+# Author: Andres Lucas Garcia Fiorini
 # Altoros S.A.(Argentina)
 # date: 01/19/2017
 #
@@ -20,8 +20,65 @@ then
     export cf_AZ=`cat .build_input | grep cf_AZ | awk -F\= '{print $2}'`;
     export cf_pass=`cat .build_input | grep cf_pass | awk -F\= '{print $2}'`;
 fi
-
-
+set -x
+if [ -n "$CF_DOMAIN" ];
+then
+     cf_domain=$CF_DOMAIN; 
+fi
+if [ -n "$BOSH_ELASTIC" ];
+then
+     bosh_elastic=$BOSH_ELASTIC; 
+fi
+if [ -n "$BOSH_UUID" ];
+then
+     bosh_UUID=$BOSH_UUID;
+fi
+if [ -n "$BOSH_STEMCELL_VERSION" ];
+then
+     bosh_stemcell_version=$BOSH_STEMCELL_VERSION;
+fi
+if [ -n "$BOSH_SG" ];
+then
+     bosh_sg=$BOSH_SG;
+fi
+if [ -n "$PUB_SG" ];
+then
+     pub_sg=$PUB_SG;
+fi
+if [ -n "$CF_ELASTIC" ];
+then
+     cf_elastic=$CF_ELASTIC;
+fi
+if [ -n "$CF_PUB_CIDR" ];
+then
+     cf_pub_cidr="$CF_PUB_CIDR"
+fi
+if [ -n "$CF_PRI_CIDR" ];
+then
+     cf_pri_cidr=$CF_PRI_CIDR;
+fi
+if [ -n "$CF_PUB_SID" ];
+then
+     cf_pub_sid=$CF_PUB_SID;
+fi
+if [ -n "$CF_PRI_SID" ];
+then
+     cf_pri_sid=$CF_PRI_SID;
+fi
+if [ -n "$CF_AZ" ];
+then
+     cf_AZ=$CF_AZ;
+fi
+if [ -n "$CF_PASS" ];
+then
+     cf_pass=$CF_PASS;
+fi
+set +x
+###############################################################
+if [ $# -gt 0 ];
+then
+  if [ $1 = "-i" ];
+  then
     # ask for the values
      printf "What is the bosh DNS domain for cf? [$cf_domain] "
      read input;
@@ -101,6 +158,21 @@ fi
      then
           cf_pass=$input;
      fi
+  fi
+fi
+echo "|$cf_pass|";
+echo `[ -n "$cf_pass" ]`;
+if [ ! -z "$cf_pass" ];
+then
+     cf_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+     echo "******************************************"
+     echo "******************************************"
+     echo ""
+     echo "        PASSWORD IS $cf_pass              "
+     echo ""
+     echo "******************************************"
+     echo "******************************************"
+fi
 
     # 
       PRIV_NET_OCTETS=`echo $cf_pri_cidr |awk -F\. '{print $1"."$2"."$3}'`;
@@ -130,10 +202,14 @@ echo "s/REPLACE_WITH_UAA_CA_CERT//g" >> .sed_script
 echo "s/REPLACE_WITH_UAA_SSL_KEY//g" >> .sed_script
 echo "s/REPLACE_WITH_UAA_SSL_CERT//g" >> .sed_script
 
+
 echo "/^        $/d" >> .sed_script
+echo "/^      $/d" >> .sed_script
 
 echo "s/10\.0\.16/$PRIV_NET_OCTETS/g" >> .sed_script;
 echo "s/10\.0\.0/$PUBL_NET_OCTETS/g" >> .sed_script;
+
+echo "s/dns\: \[$PUBL_NET_OCTETS/dns\: \[10\.0\.0/g" >> .sed_script
 
 sed -f .sed_script minimal-aws-source.yml  > minimal-aws.yml
 
