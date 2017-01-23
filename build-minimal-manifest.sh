@@ -246,4 +246,7 @@ echo "Destination yml: $dest_yml"
 echo "----------------------------------------"
 echo "Manifest: "
 cat $dest_yml
+cp $dest_yml cf-manifest/
 echo "----------------------------------------"
+
+
