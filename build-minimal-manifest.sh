@@ -217,7 +217,6 @@ echo "s/REPLACE_WITH_UAA_CA_CERT//g" >> .sed_script
 echo "s/REPLACE_WITH_UAA_SSL_KEY//g" >> .sed_script
 echo "s/REPLACE_WITH_UAA_SSL_CERT//g" >> .sed_script
 
-
 echo "/^        $/d" >> .sed_script
 echo "/^      $/d" >> .sed_script
 
@@ -242,3 +241,9 @@ echo "     cf_pri_sid=$cf_pri_sid" >> .build_input;
 echo "     cf_AZ=$cf_AZ" >> .build_input;
 echo "     cf_pass=$cf_pass" >> .build_input;
 
+echo "     Source yml: $source_yml"
+echo "Destination yml: $dest_yml"
+echo "----------------------------------------"
+echo "Manifest: "
+cat $dest_yml
+echo "----------------------------------------"
