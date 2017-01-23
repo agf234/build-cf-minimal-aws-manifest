@@ -226,7 +226,7 @@ echo "s/10\.0\.0/$PUBL_NET_OCTETS/g" >> .sed_script;
 
 echo "s/dns\: \[$PUBL_NET_OCTETS/dns\: \[10\.0\.0/g" >> .sed_script
 
-sed -f .sed_script $SOURCE_YML  > $DEST_YML
+sed -f .sed_script $source_yml  > $dest_yml
 
 echo "     cf_domain=$cf_domain" > .build_input;
 echo "     bosh_elastic=$bosh_elastic" >> .build_input;
