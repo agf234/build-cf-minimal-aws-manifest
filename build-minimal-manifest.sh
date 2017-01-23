@@ -20,7 +20,7 @@ then
     export cf_AZ=`cat .build_input | grep cf_AZ | awk -F\= '{print $2}'`;
     export cf_pass=`cat .build_input | grep cf_pass | awk -F\= '{print $2}'`;
 fi
-set -x
+
 if [ -n "$CF_DOMAIN" ];
 then
      cf_domain=$CF_DOMAIN; 
@@ -73,7 +73,7 @@ if [ -n "$CF_PASS" ];
 then
      cf_pass=$CF_PASS;
 fi
-set +x
+
 ###############################################################
 if [ $# -gt 0 ];
 then
@@ -160,11 +160,11 @@ then
      fi
   fi
 fi
-echo "|$cf_pass|";
-echo `[ -n "$cf_pass" ]`;
-if [ ! -z "$cf_pass" ];
+
+
+if [ -z "$cf_pass" ];
 then
-     cf_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+     cf_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
      echo "******************************************"
      echo "******************************************"
      echo ""
@@ -181,7 +181,10 @@ fi
 
 echo "Building script file..."
 # Vars
-echo "s/REPLACE_WITH_DIRECTOR_ID/$bosh_UUID/g" > .sed_script
+echo "1159 i \ \ \ \ \ \ \ \ machines: []" > .sed_script
+echo " " >> .sed_script
+
+echo "s/REPLACE_WITH_DIRECTOR_ID/$bosh_UUID/g" >> .sed_script
 echo "s/REPLACE_WITH_BOSH_STEMCELL_VERSION/$bosh_stemcell_version/g" >> .sed_script
 echo "s/REPLACE_WITH_SYSTEM_DOMAIN/$cf_domain/g" >> .sed_script
 echo "s/REPLACE_WITH_PUBLIC_SUBNET_ID/$cf_pub_sid/g" >> .sed_script
