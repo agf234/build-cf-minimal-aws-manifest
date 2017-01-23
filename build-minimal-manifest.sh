@@ -73,6 +73,18 @@ if [ -n "$CF_PASS" ];
 then
      cf_pass=$CF_PASS;
 fi
+if [ -n "$SOURCE_YML" ];
+then
+     source_yml=$SOURCE_YML;
+else
+     source_yml="./minimal-aws-source.yml"
+fi
+if [ -n "$DEST_YML" ];
+then
+     dest_yml=$DEST_YML;
+else
+     dest_yml="./manifest.yml"
+fi
 
 ###############################################################
 if [ $# -gt 0 ];
@@ -214,7 +226,7 @@ echo "s/10\.0\.0/$PUBL_NET_OCTETS/g" >> .sed_script;
 
 echo "s/dns\: \[$PUBL_NET_OCTETS/dns\: \[10\.0\.0/g" >> .sed_script
 
-sed -f .sed_script minimal-aws-source.yml  > minimal-aws.yml
+sed -f .sed_script $SOURCE_YML  > $DEST_YML
 
 echo "     cf_domain=$cf_domain" > .build_input;
 echo "     bosh_elastic=$bosh_elastic" >> .build_input;
