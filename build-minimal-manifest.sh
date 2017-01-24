@@ -4,6 +4,10 @@
 # Altoros S.A.(Argentina)
 # date: 01/19/2017
 #
+
+## DEBUG
+ls -ltr .
+## EOD
 if [ -f .build_input ];
 then 
     export cf_domain=`cat .build_input | grep cf_domain | awk -F\= '{print $2}'`;
@@ -246,7 +250,7 @@ echo "Destination yml: $dest_yml"
 echo "----------------------------------------"
 echo "Manifest: "
 cat $dest_yml
-cp $dest_yml cf-manifest/
+cp $dest_yml ./cf-manifest/$dest_yml
 echo "----------------------------------------"
 
 
