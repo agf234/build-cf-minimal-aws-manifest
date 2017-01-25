@@ -78,7 +78,7 @@ if [ -n "$CF_PASS" ];
 then
      cf_pass=$CF_PASS;
 fi
-if [ -n "$CF_VERSION ];
+if [ -n "$CF_VERSION" ];
 then
      cf_version=$CF_VERSION;
 fi
