@@ -83,7 +83,6 @@ then
      cf_version=$CF_VERSION;
 fi
 if [ -n "$SOURCE_YML" ];
-if [ -n "$SOURCE_YML" ];
 then
      source_yml=$SOURCE_YML;
 else
