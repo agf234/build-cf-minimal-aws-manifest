@@ -23,6 +23,7 @@ then
     export cf_pri_sid=`cat .build_input | grep cf_pri_sid | awk -F\= '{print $2}'`;
     export cf_AZ=`cat .build_input | grep cf_AZ | awk -F\= '{print $2}'`;
     export cf_pass=`cat .build_input | grep cf_pass | awk -F\= '{print $2}'`;
+    export cf_version=`cat .build_input | grep cf_version | awk -F\= '{print $2}'`;
 fi
 
 if [ -n "$CF_DOMAIN" ];
@@ -77,6 +78,11 @@ if [ -n "$CF_PASS" ];
 then
      cf_pass=$CF_PASS;
 fi
+if [ -n "$CF_VERSION ];
+then
+     cf_version=$CF_VERSION;
+fi
+if [ -n "$SOURCE_YML" ];
 if [ -n "$SOURCE_YML" ];
 then
      source_yml=$SOURCE_YML;
@@ -210,6 +216,9 @@ echo "s/REPLACE_WITH_ELASTIC_IP/$cf_elastic/g" >> .sed_script
 echo "s/REPLACE_WITH_PASSWORD/$cf_pass/g" >> .sed_script
 echo "s/REPLACE_WITH_BOSH_SECURITY_GROUP/$bosh_sg/g" >> .sed_script
 echo "s/REPLACE_WITH_AZ/$cf_AZ/g" >> .sed_script
+
+echo "8s/version\: latest/version\: $cf_version/g" >> .sed_script
+
 # Certs
 echo "/REPLACE_WITH_SSL_CERT_AND_KEY/r mycerts/cert_and_key.ssl" >> .sed_script
 echo "/REPLACE_WITH_UAA_CA_CERT/r mycerts/uaa_ca.ssl" >> .sed_script
@@ -220,6 +229,7 @@ echo "s/REPLACE_WITH_SSL_CERT_AND_KEY//g" >> .sed_script
 echo "s/REPLACE_WITH_UAA_CA_CERT//g" >> .sed_script
 echo "s/REPLACE_WITH_UAA_SSL_KEY//g" >> .sed_script
 echo "s/REPLACE_WITH_UAA_SSL_CERT//g" >> .sed_script
+
 
 echo "/^        $/d" >> .sed_script
 echo "/^      $/d" >> .sed_script
@@ -244,6 +254,7 @@ echo "     cf_pub_sid=$cf_pub_sid" >> .build_input;
 echo "     cf_pri_sid=$cf_pri_sid" >> .build_input;
 echo "     cf_AZ=$cf_AZ" >> .build_input;
 echo "     cf_pass=$cf_pass" >> .build_input;
+echo "     cf_version=$cf_version" >> .build_input;
 
 echo "     Source yml: $source_yml"
 echo "Destination yml: $dest_yml"
